@@ -33,10 +33,21 @@ class TelegrammPersonWatcher:
 
         self.last_info.date_time = datetime(1, 1, 1, 0, 0)
 
-        with open('telegramm.info', 'r') as f:
-            api_id, api_hash = [line.rstrip() for line in f]
+        self.telegramm_info = 'telegramm.info'
+        try:
+            with open(self.telegramm_info, 'r') as f:
+                api_id, api_hash = [line.rstrip() for line in f]
+        except:
+            self.print_telegramm_info()
         self.client = TelegramClient('session_name', api_id, api_hash)
         self.client.start()
+
+    def print_telegramm_info(self):
+        print('Error find file "{}"'.format(self.telegramm_info))
+        print('Create file "{}"'.format(self.telegramm_info))
+        print('     first string: "App api_id"')
+        print('     second string: "App api_hash"')
+        print('"App api_id" and "App api_hash" get from https://my.telegram.org/apps')
 
     def add_info_to_file(self, lastInfo: LastInfo):
         print('{} Update status to {}'.format(lastInfo.date_time.strftime('%Y.%m.%d %H:%M:%S'),
