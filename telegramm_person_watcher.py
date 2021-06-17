@@ -32,6 +32,7 @@ class TelegrammPersonWatcher:
         self.save_filename = os.path.join(dirName, self.save_filename)
 
         self.last_info.date_time = datetime(1, 1, 1, 0, 0)
+        self.last_info.status_online = False
 
         self.telegramm_info = 'telegramm.info'
         try:
@@ -65,6 +66,10 @@ class TelegrammPersonWatcher:
     def check_update_info(self, new_datetime, status_online: bool):
         if new_datetime != self.last_info.date_time:
             self.last_info.date_time = new_datetime
+            if self.last_info.status_online == status_online:
+                self.last_info.status_online = not self.last_info.status_online
+                self.add_info_to_file(self.last_info)
+                self.last_info.status_online = not self.last_info.status_online
             self.last_info.status_online = status_online
             self.add_info_to_file(self.last_info)
 
